@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>它叫至尊宝聊天室</title>
+    <link charset="utf-8" type="text/css" rel="stylesheet" href="./node_modules/bootstrap/dist/css/bootstrap.css">
+    <style>
+        html,body{
+            background: lightblue;
+        }
+        .panel-heading{
+            margin:20px auto;
+            text-align:center;
+            border:1px solid red;
+            font-size: 20px;
+            background-color: lightskyblue;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="panel-default">
+        <div class="panel-heading">
+            欢迎来到它叫至尊宝聊天室
+        </div>
+        <div class="panel-body">
+            <ul class="list-group" id="content">
+                <li class="list-group-item">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;“泰戈尔说，不要着急，最好的总会在最不经意的时候出现。那我们要做的就是：怀揣希望去努力，静待美好的出现。”-------《它叫至尊宝》</li>
+            </ul>
+        </div>
+        <div class="pandel-footer">
+            <div class="col-xs-9">
+                <input type="text" class="form-control" id="msg">
+            </div>
+            <div class="col-xs-3">
+                <button class="btn btn-primary" type="button" id="sendBtn">发言</button>
+            </div>
+        </div>
+    </div>
+
+</div>
+</body>
+<script charset="UTF-8" type="text/javascript" src="/socket.io/socket.io.js"></script>
+<script charset="UTF-8" type="text/javascript" src="./node_modules/jQuery/tmp/jquery.js"></script>
+<script>
+    var socket=io();
+    function append(msg) {
+        $('#content').append("<li class='list-group-item'>"+msg.user+':'+msg.content+"</li>");
+
+    }
+    socket.on('connect',function () {
+        append({user:'系统',content:'连接成功'});
+    });
+    socket.on('message',function (msg) {
+        append(msg);
+    });
+    $('#sendBtn').click(function () {
+        var msg=$('#msg').val();
+        socket.send(msg);
+        $('#msg').val('');
+    })
+
+</script>
+</html>
